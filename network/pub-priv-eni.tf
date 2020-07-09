@@ -1,6 +1,5 @@
 resource "aws_network_interface" "public_subnet_eni" {
   subnet_id       = aws_subnet.public_subnet.id
-  private_ips     = [var.public_subnet_eni_ip]
   security_groups = [aws_security_group.nat_ssh_sg.id]
   source_dest_check = false
   tags = {
@@ -18,7 +17,6 @@ output "public_subnet_eni_ip" {
 
 resource "aws_network_interface" "private_subnet_eni" {
   subnet_id       = var.private_subnet_id
-  private_ips     = [var.private_subnet_eni_ip]
   security_groups = [var.private_sg_id]
   source_dest_check = false
   tags = {

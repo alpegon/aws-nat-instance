@@ -1,8 +1,12 @@
+data "aws_subnet" "selected" {
+  id = var.private_subnet_id
+}
+
 data "template_file" "init_nat" {
   template = file("./instances/user_data.sh.tpl")
 
   vars = {
-    private_subnet_cidr = var.private_subnet_cidr
+    private_subnet_cidr = data.aws_subnet.selected.cidr_block
   }
 }
 

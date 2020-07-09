@@ -1,3 +1,6 @@
+#
+# Create IGW to provide external internet functionality
+#
 resource "aws_internet_gateway" "default" {
   vpc_id = var.vpc_id
   tags = {
@@ -8,9 +11,13 @@ resource "aws_internet_gateway" "default" {
 #
 # Public Subnet
 #
+data "aws_vpc" "selected" {
+  id = var.vpc_id
+}
+
 resource "aws_subnet" "public_subnet" {
   vpc_id = var.vpc_id
-  cidr_block = var.public_subnet_cidr
+  cidr_block = cidrsubnet(data.aws_vpc.selected.cidr_block, 8, 1)
   availability_zone = element(var.availability_zones, 0)
   tags = {
       Name = "terraform_public_subnet"
