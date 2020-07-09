@@ -1,6 +1,6 @@
 resource "aws_network_interface" "public_subnet_eni" {
   subnet_id       = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.nat_ssh_sg.id]
+  security_groups = [aws_security_group.nat_sg.id]
   source_dest_check = false
   tags = {
     Name = "terraform_public_eni"

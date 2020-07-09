@@ -38,7 +38,6 @@ output "nat_instance_id" {
   value = aws_instance.nat.id
 }
 
-
 # Although the elastic IP is related to the public subnet elastic network interface,
 # if you don't use the depends_on attribute, it will fail when attaching the eip to
 # the nat intance

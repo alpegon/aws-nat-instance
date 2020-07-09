@@ -44,7 +44,7 @@ resource "aws_route_table_association" "public_subnet" {
 }
 
 #
-# Route added to private root table that must exist
+# Route added to the private route table. The table must exist.
 #
 resource "aws_route" "r" {
   route_table_id            = var.private_route_table_id

@@ -1,12 +1,6 @@
-resource "aws_security_group" "nat_ssh_sg" {
-  name = "nat_ssh"
-  description = "Allow SSH to Nat instance host from approved ranges"
-  ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
-    cidr_blocks = [var.ip_range]
-  }
+resource "aws_security_group" "nat_sg" {
+  name = "nat_sg"
+  description = "SG for the Nat instance. No input connections allowed."
   egress {
     from_port = 0
     to_port = 0
@@ -15,10 +9,10 @@ resource "aws_security_group" "nat_ssh_sg" {
   }
   vpc_id = var.vpc_id
   tags = {
-      Name = "terraform_nat_ssh"
+      Name = "terraform_nat"
   }
 }
 
-output "nat_ssh_sg_id" {
-  value = aws_security_group.nat_ssh_sg.id
+output "nat_sg_id" {
+  value = aws_security_group.nat_sg.id
 }
