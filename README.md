@@ -5,7 +5,7 @@ This configuration assumes that you already have a VPC, a private subnet, some V
 
 ![Expected infrastructure](images/init-infrastructure.png)
 
-The terraform configuration of this projects creates an EC2 machine and its required network resources to use it as a Nat instance. Additionally it creates a bastion host to manage any issues that could happend. The image below shows the infrastructure created by terraform:
+The terraform configuration of this project creates an EC2 machine and its required network resources to use it as a Nat instance. Additionally it creates a bastion host to simplify the management of the other machines. The image below shows the infrastructure created by terraform:
 
 ![Created infrastructure](images/end-infrastructure.png)
 
