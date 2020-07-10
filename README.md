@@ -9,6 +9,25 @@ The terraform configuration of this project creates an EC2 machine and its requi
 
 ![Created infrastructure](images/end-infrastructure.png)
 
+As a summary this configuration does the following:
+
+* Creates nat security group
+* Creates an internet gateway
+* Creates an elastic network interface (ENI) in the private subnet
+* Creates a public subnet
+* Creates a public route table with a default route to the internet gateway
+* Creates an ENI in the public subnet
+* Adds a rule to redirect the traffic of the private subnet to the private ENI created before
+* Associates the public subnet with the internet gateway in the public route table
+* Creates the EC2 nat instance and provisions it with the user script. Additionally attaches the created ENIs to the intance.
+* Creates an elastic IP and assigns it to the public ENI attached to the nat instance
+
+And additionally, if you deploy the bastion host:
+
+* Creates a security group inside the public subnet for the bastion instance
+* Opens the port 22 in the security groups of the nat instance and the private subnet
+* Deployes the EC2 instance inside the bastion security group with a public IP
+
 ## Required tools and files
 
 ### Make
@@ -47,19 +66,21 @@ You can also modify the variables in the file `variables.tf` to adapt the config
 
 To deploy the infrastructure (assuming that you have a `tfvars` file called `main.tfvars` in the root folder of the project), you only need to execute the command:
 ```
-make deploy-all
+make deploy
 ```
 
 
 ## Deleting the infrastructure
 To avoid incurring in extra costs, when you finish using the infrastructure, remember to delete the created resources with the command:
 ```
-make delete-all
+make destroy
 ```
 
 ## Upgrading the infrastructure
 
-### High-Availability
+### Scalability and High-Availability
+
+The easiest way to escale the nat instance is to vertically scale the machine, which can be easily achieved by changing the `instance_type` variable in the `variables.tf` file.  
 
 This terraform configuration only deploys one nat instance in one availability zone and links it with one private subnet. If you have several private subnets in several availability zones, the recommended strategy to follow is to deploy one nat instance for each availability zone in use, and then make the nat instances to monitor each other. In case one of the instances goes down, the other instances should have the rights to power on and reconfigure a new instance in the availability zone where the machine has failed.
 
@@ -77,11 +98,6 @@ Take into account that you will need other method (like a private vpn) to access
 If you want to redeploy the bastion instance, you only have to execute:
 ```
 make deploy-bastion
-```
-
-If you don't want a bastion host from the beggining, you can create the insfrastructure with the command:
-```
-make deploy-nat
 ```
 
 ### More security !!

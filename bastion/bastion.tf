@@ -10,8 +10,3 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [aws_security_group.bastion_ssh_sg.id]
   key_name      = var.key_name
 }
-
-resource "aws_eip" "bastion" {
-  instance = aws_instance.bastion.id
-  vpc = true
-}
