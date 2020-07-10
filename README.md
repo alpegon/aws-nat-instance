@@ -113,7 +113,7 @@ The users can modify the script in `instances/user_data.sh.tpl` to modify the fi
 Once the script file has been changed, the new infrastructure can be updated with the command:
 
 ```
-make deploy-nat
+make deploy
 ```
 
 Be aware that **you will not have external internet access** from your private network while the instance is being redeployed (~ 3 minutes of downtime).
