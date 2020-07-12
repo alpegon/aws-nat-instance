@@ -86,6 +86,8 @@ This terraform configuration only deploys one nat instance in one availability z
 
 More information about this use case can be found [here](https://aws.amazon.com/articles/high-availability-for-amazon-vpc-nat-instances-an-example/).
 
+Also to improve maintenance, terraform can be combined with **ansible** to offer better provisioning capabilities. Using ansible would allow us to rewrite the nat instance configuration as an ansible role an thus give support for other instance types. This terraform + ansible combination gives the user more flexibility to define infrastructures and decouples the provisioning code from the infrastructure definition code.
+
 ### Increase the security
 
 If you deploy the infrastructure with the `make deploy-all` command, a bastion host is also deployed for managing the nat instance and accessing the machines in the private subnet. To increase the security you can delete the bastion host with the command:
@@ -109,7 +111,10 @@ Check the next section to know how to update the instance with the new rules.
 
 ### Whitelisting ports without accessing the nat instance
 
-The users can modify the script in `instances/user_data.sh.tpl` to modify the firewall or the nat configuration as needed.
+To be able to share the configuration state and thus, to allow user to update the infrastructure without having to manually copying the `*.tfstate` file, you can use the **remote state** feature of terraform. In this case, you could use a S3 backend shared by all the users. More information about this [here](https://www.terraform.io/docs/backends/types/s3.html).
+
+Once the remote state is configured, the users can modify the script in `instances/user_data.sh.tpl` to modify the firewall or the nat configuration as needed.
+
 Once the script file has been changed, the new infrastructure can be updated with the command:
 
 ```
